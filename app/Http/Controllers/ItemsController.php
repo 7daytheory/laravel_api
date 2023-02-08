@@ -98,6 +98,11 @@ class ItemsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Delete item via API
+        $item = Item::find($id);
+
+        $item->delete();
+
+        return ['response' => 'Item Successfully Deleted', 'success' => true];
     }
 }
