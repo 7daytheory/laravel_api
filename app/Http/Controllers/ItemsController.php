@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item;
 
 class ItemsController extends Controller
 {
@@ -13,7 +14,10 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        //
+        //Retrieve items
+        $items = Item::get();
+
+        return $items;
     }
 
     /**
