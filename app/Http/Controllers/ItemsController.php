@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use Illuminate\Support\Facades\Validator;
 
 class ItemsController extends Controller
 {
@@ -38,7 +39,23 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //For This API - can use store as the POST method
+        $validator = Validator::make($request->all(), [
+            'text' => 'required',
+            'body' => 'required',
+        ]);
+
+        //If Validator fails return error message
+        if($validator->fails()) {
+            return ['response' => $validator->messages(), 'success' => false];
+        }
+
+        $item = new Item;
+        $item->items_text = $request->input('text');
+        $item->items_body = $request->input('body');
+        $item->save();
+
+        return response()->json($item);
     }
 
     /**
