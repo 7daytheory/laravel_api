@@ -22,16 +22,6 @@ class ItemsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,18 +61,6 @@ class ItemsController extends Controller
 
         return response()->json($item);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -92,7 +70,24 @@ class ItemsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Update item via API
+        //For This API - can use store as the POST method
+        $validator = Validator::make($request->all(), [
+            'text' => 'required',
+            'body' => 'required',
+        ]);
+
+        //If Validator fails return error message
+        if($validator->fails()) {
+            return ['response' => $validator->messages(), 'success' => false];
+        }
+
+        $item = Item::find($id);
+        $item->items_text = $request->input('text');
+        $item->items_body = $request->input('body');
+        $item->save();
+
+        return response()->json($item);
     }
 
     /**
@@ -103,6 +98,11 @@ class ItemsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Delete item via API
+        $item = Item::find($id);
+
+        $item->delete();
+
+        return ['response' => 'Item Successfully Deleted', 'success' => true];
     }
 }
