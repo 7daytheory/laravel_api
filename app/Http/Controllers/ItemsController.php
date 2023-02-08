@@ -17,7 +17,7 @@ class ItemsController extends Controller
         //Retrieve items
         $items = Item::get();
 
-        return $items;
+        return response()->json($items);
     }
 
     /**
