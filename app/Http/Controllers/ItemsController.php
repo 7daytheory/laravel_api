@@ -70,7 +70,24 @@ class ItemsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Update item via API
+        //For This API - can use store as the POST method
+        $validator = Validator::make($request->all(), [
+            'text' => 'required',
+            'body' => 'required',
+        ]);
+
+        //If Validator fails return error message
+        if($validator->fails()) {
+            return ['response' => $validator->messages(), 'success' => false];
+        }
+
+        $item = Item::find($id);
+        $item->items_text = $request->input('text');
+        $item->items_body = $request->input('body');
+        $item->save();
+
+        return response()->json($item);
     }
 
     /**
